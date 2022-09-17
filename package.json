@@ -1,0 +1,23 @@
+{
+    "dependencies": {
+        "colors": "^1.4.0",
+        "cors": "^2.8.5",
+        "dotenv": "^16.0.2",
+        "express": "^4.18.1",
+        "mongoose": "^6.6.0",
+        "node": "^18.9.0"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.19"
+    },
+    "scripts": {
+        "start": "node server",
+        "dev": "nodemon server"
+    },
+    "name": "simple-mongoose",
+    "version": "1.0.0",
+    "main": "server.js",
+    "author": "",
+    "license": "ISC",
+    "description": ""
+}
