@@ -5,7 +5,7 @@ const productSchema = new mongoose.Schema(
     {
         name: {
             type: String,
-            required: true,
+            required: [true, "Please provide a name for create products"],
             trim: true,
             unique: [true, "Name already exist"],
             minLength: [3, "Name must be at least 3 characters"],
@@ -69,6 +69,7 @@ productSchema.pre("save", function (next) {
 });
 
 productSchema.post("save", function (doc, next) {
+    console.log(doc);
     console.log("after saving data");
     next();
 });

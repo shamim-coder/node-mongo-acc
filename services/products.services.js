@@ -16,6 +16,11 @@ exports.createProductService = async (data) => {
 exports.updateProductService = async (req) => {
     const { id } = req.params;
     const data = req.body;
-    const result = await Product.updateOne({ _id: id }, { $set: data });
+    const result = await Product.updateOne({ _id: id }, { $set: data }, { runValidators: true });
+
+    // save() method way to update product
+    // const product = await Product.findById(id);
+    // const result = await product.set(data).save();
+
     return result;
 };
