@@ -42,6 +42,13 @@ const productSchema = new mongoose.Schema(
                 message: "unit value can't be {VALUE}, must be kg/litre/pcs",
             },
         },
+        status: {
+            type: String,
+            default: "in-stock",
+            enum: {
+                values: ["in-stock", "out-of-stock", "low-stock"],
+            },
+        },
         // supplier: {
         //     type: Schema.Types.ObjectId,
         //     ref: "Supplier",
@@ -60,8 +67,25 @@ const productSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
-// Steps : Schema =>  Model   =>  Query
+// mongoose middleware for saving data: pre / post
+productSchema.pre("save", function (next) {
+    if (this.quantity == 0) {
+        this.status = "out-of-stock";
+    } else {
+        this.status = "in-stock";
+    }
+    next();
+});
 
+productSchema.post("save", function (doc, next) {
+    console.log("after saving data");
+    next();
+});
+
+
+// instance 
+
+// Steps : Schema =>  Model   =>  Query
 const Product = mongoose.model("Product", productSchema);
 
 app.get("/", (req, res) => {
@@ -73,11 +97,14 @@ app.post("/", async (req, res, next) => {
         // two way to insert data input server > save or create
 
         // using save method
-        // const product = new Product(req.body);
-        // const result = await product.save();
+        const product = new Product(req.body);
 
+        // instance creation > do something > save()
+
+        const result = await product.save();
+        console.log("data save successfully");
         // using create method
-        const result = await Product.create(req.body);
+        // const result = await Product.create(req.body);
 
         res.status(200).send({
             success: true,
